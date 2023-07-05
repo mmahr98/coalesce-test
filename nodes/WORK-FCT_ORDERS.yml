@@ -1,0 +1,128 @@
+steps:
+  FCT_ORDERS-15540496-8cc8-4c9e-bd35-49adf95fd721:
+    operation:
+      config:
+        postSQL: ""
+        preSQL: ""
+        testsEnabled: true
+      database: ""
+      deployEnabled: true
+      description: Orders data as defined by TPC-H
+      isDataVault: false
+      isMultisource: false
+      locationName: WORK
+      materializationType: table
+      metadata:
+        appliedNodeTests: []
+        columns:
+          - columnReference:
+              columnCounter: 566a5fa2-0d2e-4ab3-bba3-872f5183d906
+              stepCounter: 15540496-8cc8-4c9e-bd35-49adf95fd721
+            dataType: NUMBER(38,0)
+            description: ""
+            hashColumns: []
+            hashDetails: null
+            isBusinessKey: true
+            name: O_ORDERKEY
+            nullable: false
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 353f1aa8-fc47-4089-9b55-7424269d6963
+                    stepCounter: 1935579d-9344-431f-a3c5-7f7b500535c1
+                transform: ""
+          - columnReference:
+              columnCounter: c9cd1df3-62f8-4e2f-92e7-404b23b6c3e6
+              stepCounter: 15540496-8cc8-4c9e-bd35-49adf95fd721
+            dataType: NUMBER(38,0)
+            description: ""
+            hashColumns: []
+            hashDetails: null
+            name: O_CUSTKEY
+            nullable: false
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 7978e93c-68a6-4d43-b355-bc3f7f4d7b20
+                    stepCounter: 1935579d-9344-431f-a3c5-7f7b500535c1
+                transform: ""
+          - columnReference:
+              columnCounter: 39e946bb-a693-4a0d-8596-3e969cf870a4
+              stepCounter: 15540496-8cc8-4c9e-bd35-49adf95fd721
+            dataType: NUMBER(12,2)
+            description: ""
+            hashColumns: []
+            hashDetails: null
+            name: O_TOTALPRICE
+            nullable: false
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 4a112466-87fa-45ac-b541-fa6be486d98f
+                    stepCounter: 1935579d-9344-431f-a3c5-7f7b500535c1
+                transform: ""
+          - columnReference:
+              columnCounter: 777168bf-f23d-422d-879f-3f4bc95554f5
+              stepCounter: 15540496-8cc8-4c9e-bd35-49adf95fd721
+            dataType: NUMBER
+            description: ""
+            hashColumns: []
+            hashDetails: null
+            name: DIM_CUSTOMER_KEY
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: b585040a-77aa-4585-8096-4be442f48961
+                    stepCounter: 1935579d-9344-431f-a3c5-7f7b500535c1
+                transform: ""
+          - acceptedValues:
+              strictMatch: true
+              values: []
+            appliedColumnTests: {}
+            columnReference:
+              columnCounter: 2181ca97-d6a1-452a-92f3-0845fcab837e
+              stepCounter: 15540496-8cc8-4c9e-bd35-49adf95fd721
+            config: {}
+            dataType: TIMESTAMP
+            defaultValue: ""
+            description: ""
+            hashColumns: []
+            isSystemCreateDate: true
+            name: SYSTEM_CREATE_DATE
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences: []
+                transform: CAST(CURRENT_TIMESTAMP AS TIMESTAMP)
+          - acceptedValues:
+              strictMatch: true
+              values: []
+            appliedColumnTests: {}
+            columnReference:
+              columnCounter: 6c29c104-96ea-41cb-bab4-e03cec3e428f
+              stepCounter: 15540496-8cc8-4c9e-bd35-49adf95fd721
+            config: {}
+            dataType: TIMESTAMP
+            defaultValue: ""
+            description: ""
+            hashColumns: []
+            isSystemUpdateDate: true
+            name: SYSTEM_UPDATE_DATE
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences: []
+                transform: CAST(CURRENT_TIMESTAMP AS TIMESTAMP)
+        cteString: ""
+        enabledColumnTestIDs: []
+        sourceMapping:
+          - customSQL:
+              customSQL: ""
+            dependencies:
+              - locationName: WORK
+                nodeName: STG_ORDERS
+            join:
+              joinCondition: FROM {{ ref('WORK', 'STG_ORDERS') }} "STG_ORDERS"
+            name: FCT_ORDERS
+            noLinkRefs: []
+      name: FCT_ORDERS
+      overrideSQL: false
+      schema: ""
+      sqlType: Fact
+      type: sql
+    stepCounter: 15540496-8cc8-4c9e-bd35-49adf95fd721
