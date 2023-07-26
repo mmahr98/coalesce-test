@@ -1,0 +1,140 @@
+steps:
+  RAW_NODE1-579f7c80-e717-451a-967a-19bc0ef7b501:
+    operation:
+      config:
+        lakeFolder: ""
+        truncateBefore: false
+      database: ""
+      deployEnabled: true
+      description: ""
+      isDataVault: false
+      isMultisource: false
+      locationName: WORK
+      materializationType: table
+      metadata:
+        appliedNodeTests: []
+        columns:
+          - acceptedValues:
+              strictMatch: true
+              values: []
+            appliedColumnTests: {}
+            columnReference:
+              columnCounter: d8f6fc5c-32f2-45ca-971b-cefdd19ffd96
+              stepCounter: 579f7c80-e717-451a-967a-19bc0ef7b501
+            config: {}
+            dataType: VARIANT
+            defaultValue: ""
+            description: ""
+            hashColumns: []
+            isVariant: true
+            name: RAW_DATA
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences: []
+                transform: t.$1
+          - acceptedValues:
+              strictMatch: true
+              values: []
+            appliedColumnTests: {}
+            columnReference:
+              columnCounter: 91c214b8-c9b6-45fa-b511-11cae5c9574a
+              stepCounter: 579f7c80-e717-451a-967a-19bc0ef7b501
+            config: {}
+            dataType: NUMBER
+            defaultValue: ""
+            description: ""
+            hashColumns: []
+            isROW_NUMBER: true
+            name: RAW_FILE_ROW_NUMBER
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences: []
+                transform: metadata$file_row_number
+          - acceptedValues:
+              strictMatch: true
+              values: []
+            appliedColumnTests: {}
+            columnReference:
+              columnCounter: 001fca02-df2d-471a-bfa2-8aaa0897036b
+              stepCounter: 579f7c80-e717-451a-967a-19bc0ef7b501
+            config: {}
+            dataType: TIMESTAMP
+            defaultValue: ""
+            description: ""
+            hashColumns: []
+            isSystemCreateDate: true
+            name: RAW_LOAD_DATE
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences: []
+                transform: CAST(CURRENT_TIMESTAMP AS TIMESTAMP)
+          - acceptedValues:
+              strictMatch: true
+              values: []
+            appliedColumnTests: {}
+            columnReference:
+              columnCounter: 815a85d3-d475-4da3-8cca-338b7bf73779
+              stepCounter: 579f7c80-e717-451a-967a-19bc0ef7b501
+            config: {}
+            dataType: VARCHAR
+            defaultValue: ""
+            description: ""
+            hashColumns: []
+            isSystemRecordSource: true
+            name: RAW_RECORD_SOURCE
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences: []
+                transform: METADATA$FILENAME
+          - acceptedValues:
+              strictMatch: true
+              values: []
+            appliedColumnTests: {}
+            columnReference:
+              columnCounter: de868e46-cc2d-48ea-8995-3394e50d8001
+              stepCounter: 579f7c80-e717-451a-967a-19bc0ef7b501
+            config: {}
+            dataType: VARCHAR
+            defaultValue: ""
+            description: ""
+            hashColumns: []
+            isSystemSource: true
+            name: RAW_SYSTEM_SOURCE
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences: []
+                transform: UPPER(split_part(RAW_RECORD_SOURCE,'/',0))||split_part(RAW_RECORD_SOURCE,'/',3)
+          - acceptedValues:
+              strictMatch: true
+              values: []
+            appliedColumnTests: {}
+            columnReference:
+              columnCounter: 9f736667-86aa-4596-9aeb-7e91a945359c
+              stepCounter: 579f7c80-e717-451a-967a-19bc0ef7b501
+            config: {}
+            dataType: TIMESTAMP
+            defaultValue: ""
+            description: ""
+            hashColumns: []
+            isStartDate: true
+            name: RAW_START_DATE
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences: []
+                transform: to_timestamp(split_part(split_part(split_part(RAW_RECORD_SOURCE,'/',9),'_',-1),'.',0), 'yyyymmddhh24miss')
+        cteString: ""
+        enabledColumnTestIDs: []
+        sourceMapping:
+          - customSQL:
+              customSQL: ""
+            dependencies: []
+            join:
+              joinCondition: ""
+            name: RAW_NODE1
+            noLinkRefs: []
+      name: RAW_NODE1
+      overrideSQL: false
+      schema: ""
+      sqlType: "12"
+      type: sql
+    stepCounter: 579f7c80-e717-451a-967a-19bc0ef7b501

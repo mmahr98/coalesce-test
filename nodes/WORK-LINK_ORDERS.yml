@@ -1,0 +1,106 @@
+steps:
+  LINK_ORDERS-84e01412-ec42-41f5-9420-6adfc40765bf:
+    operation:
+      config:
+        postSQL: ""
+        preSQL: ""
+      database: ""
+      deployEnabled: true
+      description: Orders data as defined by TPC-H
+      isDataVault: false
+      isMultisource: false
+      locationName: WORK
+      materializationType: table
+      metadata:
+        appliedNodeTests: []
+        columns:
+          - columnReference:
+              columnCounter: a176d497-ad40-4763-a766-6d7f34c7d629
+              stepCounter: 84e01412-ec42-41f5-9420-6adfc40765bf
+            config:
+              is_Link_hk: true
+            dataType: STRING
+            description: ""
+            hashColumns: []
+            hashDetails: null
+            name: HK_ORDERS_CUSTOMER_L
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 1679f087-4fc6-4200-9edf-0ce19bdf9ac3
+                    stepCounter: 16d79211-603a-4127-9d86-12e4f90ee8a0
+                transform: ""
+          - columnReference:
+              columnCounter: c967ebb4-7123-44e9-a044-354000a0a9fc
+              stepCounter: 84e01412-ec42-41f5-9420-6adfc40765bf
+            dataType: STRING
+            description: ""
+            hashColumns: []
+            hashDetails: null
+            name: HK_ORDERS_H
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 55fe2778-5d10-4b70-b120-34f8b35b6efb
+                    stepCounter: 16d79211-603a-4127-9d86-12e4f90ee8a0
+                transform: ""
+          - columnReference:
+              columnCounter: de4c64f9-b5d1-40a9-91f9-87f7cd526c18
+              stepCounter: 84e01412-ec42-41f5-9420-6adfc40765bf
+            dataType: STRING
+            description: ""
+            hashColumns: []
+            hashDetails: null
+            name: HK_CUSTOMER_H
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 91285980-deb8-4387-bed0-c03fc64cecd5
+                    stepCounter: 16d79211-603a-4127-9d86-12e4f90ee8a0
+                transform: ""
+          - columnReference:
+              columnCounter: ee501d31-8883-498c-8275-3a13951dd66d
+              stepCounter: 84e01412-ec42-41f5-9420-6adfc40765bf
+            dataType: TIMESTAMP
+            description: The Load Date Timestamp (LDTS) describes when this data first arrived in the Data Warehouse.
+            hashColumns: []
+            hashDetails: null
+            name: LDTS
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 23783c73-beee-438e-9a82-e0f248296537
+                    stepCounter: 16d79211-603a-4127-9d86-12e4f90ee8a0
+                transform: ""
+          - columnReference:
+              columnCounter: 0d0d0fb3-1d18-4146-830e-c5d2184befb0
+              stepCounter: 84e01412-ec42-41f5-9420-6adfc40765bf
+            dataType: STRING
+            description: The Record Source (RSRC) describes the source of this data.
+            hashColumns: []
+            hashDetails: null
+            name: RSRC
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 21e8fd5d-47da-4eff-be7a-c19d03ef3703
+                    stepCounter: 16d79211-603a-4127-9d86-12e4f90ee8a0
+                transform: ""
+        cteString: ""
+        enabledColumnTestIDs: []
+        sourceMapping:
+          - customSQL:
+              customSQL: ""
+            dependencies:
+              - locationName: WORK
+                nodeName: DVSTG_ORDERS
+            join:
+              joinCondition: FROM {{ ref('WORK', 'DVSTG_ORDERS') }} "DVSTG_ORDERS"
+            name: LINK_ORDERS
+            noLinkRefs: []
+      name: LINK_ORDERS
+      overrideSQL: false
+      schema: ""
+      sqlType: "8"
+      type: sql
+    stepCounter: 84e01412-ec42-41f5-9420-6adfc40765bf
