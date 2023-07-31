@@ -3,7 +3,7 @@ jobs:
   Job-1:
     excludeSelector: ""
     id: 1
-    includeSelector: "{ location: DATA_LAKE_TEST name: RAW_NODE }"
+    includeSelector: "{ location: WORK name: RAW_NODE1 }"
     name: TestJob
     steps: []
     subgraphs: []
@@ -11,23 +11,23 @@ locations:
   DATA_LAKE_TEST:
     mappingDefinitions:
       "2":
-        database: PC_COALESCE_DB
-        schema: PUBLIC
+        database: DATALAKE_JSON
+        schema: DSGVO
       "3":
         database: PC_COALESCE_DB
         schema: PUBLIC
   SAMPLE:
     mappingDefinitions:
       "2":
-        database: SNOWFLAKE_SAMPLE_DATA
-        schema: TPCH_SF1
+        database: DATALAKE_JSON
+        schema: DSGVO
       "3":
         database: SNOWFLAKE_SAMPLE_DATA
         schema: TPCH_SF1
   WORK:
     mappingDefinitions:
       "2":
-        database: PC_COALESCE_DB
+        database: DATALAKE_JSON
         schema: PUBLIC
       "3":
         database: PC_COALESCE_DB
