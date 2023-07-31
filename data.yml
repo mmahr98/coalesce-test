@@ -1,14 +1,21 @@
 defaultStorageMapping: DATA_LAKE_TEST
-jobs: {}
+jobs:
+  Job-1:
+    excludeSelector: ""
+    id: 1
+    includeSelector: "{ location: DATA_LAKE_TEST name: RAW_NODE }"
+    name: TestJob
+    steps: []
+    subgraphs: []
 locations:
   DATA_LAKE_TEST:
     mappingDefinitions:
       "2":
-        database: ""
-        schema: ""
+        database: PC_COALESCE_DB
+        schema: PUBLIC
       "3":
-        database: ""
-        schema: ""
+        database: PC_COALESCE_DB
+        schema: PUBLIC
   SAMPLE:
     mappingDefinitions:
       "2":
@@ -1104,6 +1111,263 @@ stepTypes:
             	
             {% endif %}
     name: Raw_Tables
+    version: 1
+  StepType-13:
+    id: "13"
+    isDisabled: false
+    metadata:
+      defaultStorageLocation: null
+      error: null
+      nodeMetadataSpec: |
+        capitalized: Raw Table with Pseudo
+        short: RAW
+        plural: RAW
+        tagColor: '#2EB67D'
+
+        config:
+        - groupName: Options
+          items:
+          - type: materializationSelector
+            default: table
+            options:
+            - table
+            isRequired: true
+              
+
+          - displayName: Path
+            attributeName: Path
+            type: textBox
+            isRequired: false    
+
+          - displayName: GDPR
+            type: toggleButton
+            attributeName: isGDPR
+            isRequired: true
+
+          - displayName: GDPR Column
+            type: columnSelector
+            attributeName: GDPRColumns
+            isRequired: true
+            description: 
+            enableIf: "{% if config.isGDPR %} true {% else %} false {% endif %}"
+
+          - displayName: GDPR Entity
+            type: textBox
+            attributeName: GDPREntity
+            isRequired: true
+            description: 
+            enableIf: "{% if config.isGDPR %} true {% else %} false {% endif %}"    
+
+          - displayName: GDPR PK
+            type: textBox
+            attributeName: GDPRpk
+            isRequired: true
+            description: 
+            enableIf: "{% if config.isGDPR %} true {% else %} false {% endif %}" 
+
+        mappingColumns:                                  # Adds additional columns to the mapping grid for additional metadata per node-column
+        - type: textBox                                  # Generic textbox in mapping grid
+          headerName: 'GDPR'                        # GUI display name (string, required) 
+          attributeName: 'myGDPRColumn'     
+
+
+        systemColumns:
+        - displayName: "RAW_DATA"
+          transform: t.$1
+          dataType: VARIANT
+          placement: begin
+          attributeName: isVariant
+
+        - displayName: "RAW_FILE_ROW_NUMBER"
+          transform: metadata$file_row_number
+          dataType: NUMBER
+          placement: begin
+          attributeName: isROW_NUMBER
+
+        - displayName: "RAW_LOAD_DATE"
+          transform: CAST(CURRENT_TIMESTAMP AS TIMESTAMP)
+          dataType: TIMESTAMP
+          placement: end
+          attributeName: isSystemCreateDate
+
+        - displayName: "RAW_RECORD_SOURCE"
+          transform: METADATA$FILENAME
+          dataType: VARCHAR
+          placement: end
+          attributeName: isSystemRecordSource
+      templates:
+        create:
+          templateString: |
+            {% if node.override.create.enabled %}
+            	
+            	{{ node.override.create.script }}
+            
+            {% elif node.materializationType == 'table' %}
+            	{{ stage('Create Stage Table') }}
+            
+            	CREATE OR REPLACE TABLE {{ ref_no_link(node.location.name, node.name) }}
+            	(
+            		{% for col in columns %}
+            			{%- if not col.GDPRColumns -%} 
+            			"{{ col.name }}" {{ col.dataType }}
+            			{%- if not col.nullable %} NOT NULL
+            				{%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif %}
+            			{% endif %}
+            			{%- if col.description | length > 0 %} COMMENT '{{ col.description }}'{% endif %}
+            			{%- if not loop.last -%}, {% endif %}
+            			{% endif %}
+            		{% endfor %}
+            	)
+            	{%- if node.description | length > 0 %} COMMENT = '{{ node.description }}'{% endif %}
+            
+            
+            
+            
+            {% endif %}
+        run:
+          templateString: |
+            {% if not config.isGDPR %}
+            	
+            		{% if config.truncateBefore %}
+            	
+            			{{ stage('Truncate Stage Table') }}
+            			TRUNCATE IF EXISTS {{ ref_no_link(node.location.name, node.name) }}
+            	
+            		{% endif %}
+            	
+            	
+            
+            	
+            		{% for source in sources %}
+            	
+            			
+            				{{ stage('Insert ' + source.name | string ) }}
+            	
+            				COPY INTO {{ ref_no_link(node.location.name, node.name) }}
+            				(
+            					{% for col in source.columns %}
+            					{%- if not col.GDPRColumns -%} 
+            						"{{ col.name }}"
+            						{%- if not loop.last -%},{% endif %}
+            					{% endif %}
+            					{% endfor %}
+            				) FROM
+            			
+            			(
+            			SELECT
+            			{% for col in source.columns %}
+            			{%- if not col.GDPRColumns -%} 
+                            {{ get_source_transform(col) }} AS "{{ col.name }}"
+            				{%- if not loop.last -%}, {% endif %}
+            			{% endif %}
+            			{% endfor %}
+            	
+            			FROM {{ config.Path }} t)
+            	
+            	
+            		{% endfor %}
+            	
+            {% else %}
+            
+            
+            
+            		{{ stage('Create tmp Table data') }}
+            		CREATE or REPLACE TRANSIENT TABLE  {{ ref_no_link(node.location.name,node.name) | replace('"','') }}_TMP  
+            		(
+            		{% for col in columns %}
+            			{%- if not col.GDPRColumns -%} 
+            			"{{ col.name }}" {{ col.dataType }}
+            			{%- if not col.nullable %} NOT NULL
+            				{%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif %}
+            			{% endif %}
+            			{%- if col.description | length > 0 %} COMMENT '{{ col.description }}'{% endif %}
+            			{%- if not loop.last -%}, {% endif %}
+            			{% endif %}
+            		{% endfor %}
+            		)	
+            
+            		{{ stage('Create tmp Key data') }}
+            		CREATE or REPLACE TRANSIENT TABLE  {{parameters.key_table_tmp}}  
+            		(
+            		ID string,
+            		passphrase string,
+            		insert_ldts timestamp_tz(9),
+            		entity string,
+            		comment string
+            		)	
+            
+            		{% for source in sources %}
+            	
+            			
+            			{{ stage('Insert tmp key table ' + parameters.key_table_tmp | string ) }}
+            	
+            			INSERT INTO {{parameters.key_table_tmp}} 
+            			SELECT
+            			CASE WHEN k.ID IS NOT NULL THEN k.ID
+            			ELSE {{ config.GDPRpk }} END as ID
+            			, randstr(15, random()) as passphrase
+            			, CAST(CURRENT_TIMESTAMP AS TIMESTAMP) as insert_ldts
+            			, '{{ config.GDPREntity }}'  as entity
+            			, 'Creation during load' as comment	
+            			FROM {{ config.Path }} t
+            			LEFT JOIN {{parameters.key_table}} k ON {{ config.GDPRpk }} = k.ID
+            		{% endfor %}		
+            
+            	
+            		{% for source in sources %}
+            	
+            			
+            			{{ stage('Insert tmp data table ' + source.name | string ) }}
+            	
+            				INSERT INTO  {{ ref_no_link(node.location.name,node.name) | replace('"','') }}_TMP 
+            			SELECT
+            			{% for col in source.columns %}
+            				{%- if col.GDPRColumns -%} 
+            				OBJECT_INSERT(
+            					t.$1,
+            					'{{ col.name }}' ,
+            					encrypt(t.$1:{{ col.name }}, k.passphrase), TRUE),
+            				{% endif %}
+            			{% endfor %}
+            			{% for col in source.columns %}
+            				{%- if not col.GDPRColumns and not col.name == 'RAW_DATA' -%} 
+            
+                            {{ get_source_transform(col) }} AS "{{ col.name }}"
+            
+            				{%- if not loop.last -%}, {% endif %}
+            				{% endif %}
+            			{% endfor %}
+            	
+            			FROM {{ config.Path }} t
+            			JOIN {{parameters.key_table_tmp}}  k on {{ config.GDPRpk }} = k.id
+            
+            
+            
+            	
+            		{% endfor %}
+            
+            		{{ stage('Insert tmp data Table') }}
+            		INSERT INTO   {{ ref_no_link(node.location.name,node.name) }}  
+            		SELECT * FROM {{ ref_no_link(node.location.name,node.name) | replace('"','') }}_TMP  
+            
+            		{{ stage('Insert tmp key Table') }}
+            		INSERT INTO   {{parameters.key_table}}   
+            		SELECT * FROM {{parameters.key_table_tmp}} 
+            
+            		{{ stage('Drop tmp key Table') }}
+            		DROP TABLE  {{ ref_no_link(node.location.name,node.name) | replace('"','') }}_TMP  
+            
+            		{{ stage('Drop tmp data Table') }}
+            		DROP TABLE {{parameters.key_table_tmp}}  
+            
+            
+            		{{ stage('Delete file in Lake') }}
+            		//REMOVE {{ config.Path }}  		
+            	
+            {% endif %}
+            
+            
+    name: Raw_DG
     version: 1
   StepType-2:
     id: "2"
@@ -4228,4 +4492,4 @@ stepTypes:
     name: Persistent Stage
     version: 1
 subgraphs: {}
-version: 1
+version: 2

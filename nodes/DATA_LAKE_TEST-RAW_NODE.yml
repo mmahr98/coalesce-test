@@ -1,0 +1,105 @@
+steps:
+  RAW_NODE-3440c1bb-bf74-4851-8e41-e384989e3436:
+    operation:
+      config:
+        GDPREntity: ""
+        GDPRpk: ""
+        Path: ""
+        isGDPR: false
+      database: ""
+      deployEnabled: true
+      description: ""
+      isMultisource: false
+      locationName: DATA_LAKE_TEST
+      materializationType: table
+      metadata:
+        appliedNodeTests: []
+        columns:
+          - acceptedValues:
+              strictMatch: true
+              values: []
+            appliedColumnTests: {}
+            columnReference:
+              columnCounter: 742a8ece-42d6-4ef4-9831-03d6c4dfd1ae
+              stepCounter: 3440c1bb-bf74-4851-8e41-e384989e3436
+            config: {}
+            dataType: VARIANT
+            defaultValue: ""
+            description: ""
+            hashColumns: []
+            isVariant: true
+            name: RAW_DATA
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences: []
+                transform: t.$1
+          - acceptedValues:
+              strictMatch: true
+              values: []
+            appliedColumnTests: {}
+            columnReference:
+              columnCounter: 283ce7c6-8789-4f56-9a7d-96532914852d
+              stepCounter: 3440c1bb-bf74-4851-8e41-e384989e3436
+            config: {}
+            dataType: NUMBER
+            defaultValue: ""
+            description: ""
+            hashColumns: []
+            isROW_NUMBER: true
+            name: RAW_FILE_ROW_NUMBER
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences: []
+                transform: metadata$file_row_number
+          - acceptedValues:
+              strictMatch: true
+              values: []
+            appliedColumnTests: {}
+            columnReference:
+              columnCounter: a83cba11-2fc0-4693-898a-f82e9c0c29c4
+              stepCounter: 3440c1bb-bf74-4851-8e41-e384989e3436
+            config: {}
+            dataType: TIMESTAMP
+            defaultValue: ""
+            description: ""
+            hashColumns: []
+            isSystemCreateDate: true
+            name: RAW_LOAD_DATE
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences: []
+                transform: CAST(CURRENT_TIMESTAMP AS TIMESTAMP)
+          - acceptedValues:
+              strictMatch: true
+              values: []
+            appliedColumnTests: {}
+            columnReference:
+              columnCounter: a4152af5-c4ca-4707-b4b1-2f0af3519f5b
+              stepCounter: 3440c1bb-bf74-4851-8e41-e384989e3436
+            config: {}
+            dataType: VARCHAR
+            defaultValue: ""
+            description: ""
+            hashColumns: []
+            isSystemRecordSource: true
+            name: RAW_RECORD_SOURCE
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences: []
+                transform: METADATA$FILENAME
+        cteString: ""
+        enabledColumnTestIDs: []
+        sourceMapping:
+          - customSQL:
+              customSQL: ""
+            dependencies: []
+            join:
+              joinCondition: ""
+            name: RAW_NODE
+            noLinkRefs: []
+      name: RAW_NODE
+      overrideSQL: false
+      schema: ""
+      sqlType: "13"
+      type: sql
+    stepCounter: 3440c1bb-bf74-4851-8e41-e384989e3436
