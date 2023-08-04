@@ -16,6 +16,9 @@ locations:
       "3":
         database: PC_COALESCE_DB
         schema: PUBLIC
+      "4":
+        database: DATALAKE_JSON
+        schema: DSGVO
   SAMPLE:
     mappingDefinitions:
       "2":
@@ -24,6 +27,9 @@ locations:
       "3":
         database: SNOWFLAKE_SAMPLE_DATA
         schema: TPCH_SF1
+      "4":
+        database: DATALAKE_JSON
+        schema: PUBLIC
   WORK:
     mappingDefinitions:
       "2":
@@ -32,6 +38,9 @@ locations:
       "3":
         database: PC_COALESCE_DB
         schema: PUBLIC
+      "4":
+        database: DATALAKE_JSON
+        schema: DSGVO
 macros:
   Macro-1:
     id: "1"
@@ -1067,10 +1076,10 @@ stepTypes:
             RUN TEMPLATE
             
             {{ stage('Use Database') }}
-            Use database dataplatform_{{parameters.env}}
+            Use database {{parameters.database}}
             
             {{stage('Use Warehouse')}}
-            Use warehouse "COMPUTE_WH"
+            Use warehouse "WH_XSMALL"
             
             {% if node.materializationType == 'table' %}
             
@@ -4491,5 +4500,11 @@ stepTypes:
             {% endif %}
     name: Persistent Stage
     version: 1
-subgraphs: {}
+subgraphs:
+  Subgraph-1:
+    id: "1"
+    name: New Subgraph
+    steps:
+      - 41fba335-132b-467b-ad72-21f8b411123e
+      - 41fba335-132b-467b-ad72-21f8b411123e
 version: 2

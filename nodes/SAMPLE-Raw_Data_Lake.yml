@@ -1,14 +1,16 @@
 steps:
-  RAW_NODE-41fba335-132b-467b-ad72-21f8b411123e:
+  Raw_Data_Lake-3ffdd1b5-6af8-4058-b428-0223b1a0df81:
     operation:
       config:
-        lakeFolder: ""
-        truncateBefore: true
+        GDPREntity: ""
+        GDPRpk: ""
+        Path: ""
+        isGDPR: false
       database: ""
       deployEnabled: true
       description: ""
       isMultisource: false
-      locationName: DATA_LAKE_TEST
+      locationName: SAMPLE
       materializationType: table
       metadata:
         appliedNodeTests: []
@@ -18,8 +20,8 @@ steps:
               values: []
             appliedColumnTests: {}
             columnReference:
-              columnCounter: 6bab6375-6362-43ff-a718-414617c899fc
-              stepCounter: 41fba335-132b-467b-ad72-21f8b411123e
+              columnCounter: ba2d838f-0354-43b5-bac4-2334f80ea764
+              stepCounter: 3ffdd1b5-6af8-4058-b428-0223b1a0df81
             config: {}
             dataType: VARIANT
             defaultValue: ""
@@ -36,8 +38,8 @@ steps:
               values: []
             appliedColumnTests: {}
             columnReference:
-              columnCounter: 99ffd2b5-87e4-40ae-8d6a-2f4d0c2421e0
-              stepCounter: 41fba335-132b-467b-ad72-21f8b411123e
+              columnCounter: 84657456-9b59-4c93-9eb2-b52c3f9a1159
+              stepCounter: 3ffdd1b5-6af8-4058-b428-0223b1a0df81
             config: {}
             dataType: NUMBER
             defaultValue: ""
@@ -54,9 +56,10 @@ steps:
               values: []
             appliedColumnTests: {}
             columnReference:
-              columnCounter: 489a38f4-501f-4593-bed4-9f9e5e24a68c
-              stepCounter: 41fba335-132b-467b-ad72-21f8b411123e
-            config: {}
+              columnCounter: b7e87e08-e302-49fa-b13a-197fee74a9cf
+              stepCounter: 3ffdd1b5-6af8-4058-b428-0223b1a0df81
+            config:
+              myGDPRColumn: x
             dataType: TIMESTAMP
             defaultValue: ""
             description: ""
@@ -72,8 +75,8 @@ steps:
               values: []
             appliedColumnTests: {}
             columnReference:
-              columnCounter: 1dc644a5-ffd4-460d-9f1c-398d8f669113
-              stepCounter: 41fba335-132b-467b-ad72-21f8b411123e
+              columnCounter: f6b81efd-c259-450b-b383-1c65632edc3f
+              stepCounter: 3ffdd1b5-6af8-4058-b428-0223b1a0df81
             config: {}
             dataType: VARCHAR
             defaultValue: ""
@@ -85,42 +88,6 @@ steps:
             sourceColumnReferences:
               - columnReferences: []
                 transform: METADATA$FILENAME
-          - acceptedValues:
-              strictMatch: true
-              values: []
-            appliedColumnTests: {}
-            columnReference:
-              columnCounter: 95a67419-c64c-4681-a4c4-db6107ab0a11
-              stepCounter: 41fba335-132b-467b-ad72-21f8b411123e
-            config: {}
-            dataType: VARCHAR
-            defaultValue: ""
-            description: ""
-            hashColumns: []
-            isSystemSource: true
-            name: RAW_SYSTEM_SOURCE
-            nullable: true
-            sourceColumnReferences:
-              - columnReferences: []
-                transform: UPPER(split_part(RAW_RECORD_SOURCE,'/',0))||split_part(RAW_RECORD_SOURCE,'/',3)
-          - acceptedValues:
-              strictMatch: true
-              values: []
-            appliedColumnTests: {}
-            columnReference:
-              columnCounter: 2d4fe7f0-ee65-4758-9946-8474040793f5
-              stepCounter: 41fba335-132b-467b-ad72-21f8b411123e
-            config: {}
-            dataType: TIMESTAMP
-            defaultValue: ""
-            description: ""
-            hashColumns: []
-            isStartDate: true
-            name: RAW_START_DATE
-            nullable: true
-            sourceColumnReferences:
-              - columnReferences: []
-                transform: to_timestamp(split_part(split_part(split_part(RAW_RECORD_SOURCE,'/',9),'_',-1),'.',0), 'yyyymmddhh24miss')
         cteString: ""
         enabledColumnTestIDs: []
         sourceMapping:
@@ -129,11 +96,11 @@ steps:
             dependencies: []
             join:
               joinCondition: ""
-            name: RAW_NODE
+            name: Raw_Data_Lake
             noLinkRefs: []
-      name: RAW_NODE
+      name: Raw_Data_Lake
       overrideSQL: false
       schema: ""
-      sqlType: "12"
+      sqlType: "13"
       type: sql
-    stepCounter: 41fba335-132b-467b-ad72-21f8b411123e
+    stepCounter: 3ffdd1b5-6af8-4058-b428-0223b1a0df81
